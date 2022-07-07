@@ -117,7 +117,6 @@ const modelLoader = (
       hammic = model.getObjectByName("Hammic");
       table = model.getObjectByName("Table");
       bilboardFace = model.getObjectByName("BilboardFace");
-      console.log(bilboardFace.position.x * 0.1);
 
       model.position.set(position.x, position.y, position.z);
       model.scale.set(scale.x, scale.y, scale.z);
@@ -159,7 +158,6 @@ const modelLoader = (
       loaded = (xhr.loaded / totalSize).toFixed(0);
       container.childNodes[0].textContent = `Loading ${loaded * 100}%`;
       // container.childNodes[0].textContent = `loading ${loaded * 100}%`;
-      // console.log((xhr.loaded / totalSize) * 100 + "% loaded");
     },
     (error) => {
       console.log(error);
@@ -245,7 +243,6 @@ const onPointerDown = (event, scene, camera) => {
       const offset = new THREE.Vector3(0, 0, 1);
       // camera.position.addVectors(bilboardFace.position, offset);
       // camera.lookAt(bilboardFace.position);
-      // console.log(bilboardFace.rotation);
     } else if (
       object.getObjectByName("Cube015") ||
       object.getObjectByName("Cube015_1") ||
@@ -423,7 +420,6 @@ const render = () => {
 
   const controls = scene.userData.controls;
 
-  // console.log(controls);
   //camera.aspect = width / height; // not changing in this example
   //camera.updateProjectionMatrix();
   controls.update();

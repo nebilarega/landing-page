@@ -34,17 +34,18 @@ let blade1,
   pole,
   shopLight,
   hammic,
-  table;
+  table,
+  bilboardFace;
 
 const lights = () => {
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
   directionalLight.position.set(2, 2, 1);
   directionalLight.castShadow = true;
   // directionalLight.angle = 0.5;
   directionalLight.distance = 10;
   //Set up shadow properties for the directionalLight
   directionalLight.shadow.camera.near = 1;
-  directionalLight.shadow.camera.far = 6;
+  directionalLight.shadow.camera.far = 5;
   directionalLight.shadow.camera.right = 3;
   directionalLight.shadow.camera.left = -3;
   directionalLight.shadow.camera.top = 3;
@@ -115,7 +116,9 @@ const modelLoader = (
       pole = model.getObjectByName("Pole");
       hammic = model.getObjectByName("Hammic");
       table = model.getObjectByName("Table");
-      model.position.set(position.x, position.y, position.z);
+      bilboardFace = model.getObjectByName("BilboardFace");
+      console.log(bilboardFace.position.x * 0.1);
+
       model.position.set(position.x, position.y, position.z);
       model.scale.set(scale.x, scale.y, scale.z);
       model.rotation.set(rotation.x, rotation.y, rotation.z);
@@ -233,10 +236,16 @@ const onPointerDown = (event, scene, camera) => {
       object.getObjectByName("Cube014_2") ||
       object.getObjectByName("Cube014_3")
     ) {
-      const offset = new THREE.Vector3(0, 1, 0);
-      camera.position.addVectors(text.position, offset);
-      camera.lookAt(text.position);
-      console.log(text.rotation);
+      const pos = {
+        x: bilboardFace.position.x,
+        y: bilboardFace.position.y,
+        z: bilboardFace.position.z,
+      };
+      camera.position.set(pos.x, pos.y, pos.z);
+      const offset = new THREE.Vector3(0, 0, 1);
+      // camera.position.addVectors(bilboardFace.position, offset);
+      // camera.lookAt(bilboardFace.position);
+      // console.log(bilboardFace.rotation);
     } else if (
       object.getObjectByName("Cube015") ||
       object.getObjectByName("Cube015_1") ||
@@ -250,8 +259,6 @@ const onPointerDown = (event, scene, camera) => {
 
 const init = () => {
   canvas = document.querySelector("#webgl");
-  const content = document.querySelector("#content");
-  const container = document.querySelector("#container");
 
   const scene1 = new THREE.Scene();
   scene1.userData.element = content;
@@ -279,14 +286,13 @@ const init = () => {
   scene1.userData.controls.update();
 
   modelLoader(
-    "./models/JesseFinal2.glb",
+    "./models/NebilFinalModel2.glb",
     scene1,
     { x: 0.1, y: 0.1, z: 0.1 },
     { x: -0.2, y: 0, z: 0 },
     { x: 0, y: -Math.PI / 3, z: 0 },
     particulateModel
   );
-  // particulateModel(specificModel, scene1);
   const horizontalPlane = new THREE.Mesh(
     new THREE.PlaneGeometry(100, 100),
     new THREE.MeshStandardMaterial({
@@ -420,7 +426,7 @@ const render = () => {
   // console.log(controls);
   //camera.aspect = width / height; // not changing in this example
   //camera.updateProjectionMatrix();
-  // controls.update();
+  controls.update();
 
   composer.render();
 };
